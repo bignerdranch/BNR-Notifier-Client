@@ -7,6 +7,36 @@ const httpUrl = Platform.select({
   ios: 'http://localhost:3000',
   android: 'http://10.0.2.2:3000',
 });
+const wsUrl = Platform.select({
+  ios: 'ws://localhost:3000',
+  android: 'ws://10.0.2.2:3000',
+});
+
+let socket;
+
+const setUpWebSocket = addMessage => {
+  if (!socket) {
+    socket = new WebSocket(wsUrl);
+    console.log('Attempting Connection...');
+
+    socket.onopen = () => {
+      console.log('Successfully Connected');
+    };
+
+    socket.onclose = event => {
+      console.log('Socket Closed Connection: ', event);
+      socket = null;
+    };
+
+    socket.onerror = error => {
+      console.log('Socket Error: ', error);
+    };
+  }
+
+  socket.onmessage = event => {
+    addMessage(JSON.parse(event.data));
+  };
+};
 
 const loadInitialData = async setMessages => {
   const messages = await axios.get(`${httpUrl}/list`);
@@ -19,6 +49,12 @@ export default function MessageList() {
   useEffect(() => {
     loadInitialData(setMessages);
   }, []);
+
+  useEffect(() => {
+    setUpWebSocket(newMessage => {
+      setMessages([newMessage, ...messages]);
+    });
+  }, [messages]);
 
   return (
     <View style={{ flex: 1 }}>
