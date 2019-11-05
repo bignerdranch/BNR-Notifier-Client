@@ -3,14 +3,16 @@ import { FlatList, Linking, Platform, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import axios from 'axios';
 
-const httpUrl = Platform.select({
-  ios: 'http://localhost:3000',
-  android: 'http://10.0.2.2:3000',
-});
-const wsUrl = Platform.select({
-  ios: 'ws://localhost:3000',
-  android: 'ws://10.0.2.2:3000',
-});
+// const httpUrl = Platform.select({
+//   ios: 'http://localhost:3000',
+//   android: 'http://10.0.2.2:3000',
+// });
+// const wsUrl = Platform.select({
+//   ios: 'ws://localhost:3000',
+//   android: 'ws://10.0.2.2:3000',
+// });
+const httpUrl = 'https://ciw-notifier.herokuapp.com';
+const wsUrl = 'wss://ciw-notifier.herokuapp.com';
 
 let socket;
 
