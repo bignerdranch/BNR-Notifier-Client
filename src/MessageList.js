@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, Platform, View } from 'react-native';
+import { FlatList, Linking, Platform, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import axios from 'axios';
 
@@ -61,7 +61,13 @@ export default function MessageList() {
       <FlatList
         data={messages}
         keyExtractor={item => item._id}
-        renderItem={({ item }) => <ListItem title={item.text} bottomDivider />}
+        renderItem={({ item }) => (
+          <ListItem
+            title={item.text}
+            bottomDivider
+            onPress={() => item.url && Linking.openURL(item.url)}
+          />
+        )}
       />
     </View>
   );
